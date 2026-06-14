@@ -1,0 +1,39 @@
+#!/bin/env bash
+
+REQUIRED_PROGRAMS=("curl" "uname" "mkdir" "tar" "git")
+
+for cmd in "${REQUIRED_PROGRAMS[@]}"; do
+  if ! command -v "$cmd" &> /dev/null; then
+    echo "$cmd is missing but is required. Install it to continue."
+    exit 1
+  else
+    echo "$cmd found... Good."
+  fi
+done
+
+PREFIX="/tmp/myxi.nvim.installer"
+mkdir -p "$PREFIX"
+
+NVIM_VERSION="latest"
+NVIM_APPNAME="nvim-myxi"
+NVIM_HOME="$HOME/.config/$NVIM_APPNAME" 
+
+ARCH=`uname -m`
+
+TARNAME="nvim-linux-$ARCH"
+OUTNAME="$PREFIX/linux.tar.gz"
+
+DOWNLOAD_LINK="https://github.com/neovim/neovim/releases/$NVIM_VERSION/download/$TARNAME.tar.gz"
+
+mkdir "$NVIM_HOME" -p
+if ! [[ -e "$NVIM_HOME/init.lua" ]]; then
+  curl -L https://myxi.qzz.io/nvim > $NVIM_HOME/init.lua
+fi
+
+if ! [[ -e "$OUTNAME" ]]; then
+  curl -L "$DOWNLOAD_LINK" > "$OUTNAME"
+fi
+
+tar -xf "$OUTNAME" -C "$PREFIX/"
+
+exec env NVIM_APPNAME="$NVIM_APPNAME" "$PREFIX/$TARNAME/bin/nvim"
