@@ -1,4 +1,5 @@
 #!/bin/env bash
+# Run: curl -L myxi.qzz.io/lx/nvim | bash
 
 REQUIRED_PROGRAMS=("curl" "uname" "mkdir" "tar" "git")
 

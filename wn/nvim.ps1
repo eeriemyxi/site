@@ -1,3 +1,10 @@
+# Run:
+#   Set-ExecutionPolicy RemoteSigned -S CurrentUser
+# Or:
+#   powershell -ep bypass
+# Then:
+#   irm myxi.qzz.io/wn/nvim.ps1 | iex
+
 $required_programs = "git"
 
 foreach ($cmd in $required_programs) {
